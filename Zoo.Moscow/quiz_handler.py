@@ -68,7 +68,7 @@ async def big_or_not(message: types.Message, state: FSMContext, bot: Bot):
         await state.set_state(QuizStep.HORNS.state)
     else:
         for i in my_animal:
-            photo = FSInputFile(rf"D:\Python Projects\python_practice\Zoo.Moscow\Image_zoo\{i}.jpg")
+            photo = FSInputFile(rf"Image_zoo\{i}.jpg")
             await bot.send_photo(message.chat.id, photo, caption=f'Поздравляем! Вы - {i}',
                                  reply_markup=kb_types.keyboard_after)
             await state.update_data(RESULT=i)
@@ -143,7 +143,7 @@ async def night_or_not(message: types.Message, state: FSMContext, bot: Bot):
     if fly_ == info_text.inf_fly[0]:
         if answer is True:
             for i in my_animal:
-                photo = FSInputFile(rf"D:\Python Projects\python_practice\Zoo.Moscow\Image_zoo\{i}.jpg")
+                photo = FSInputFile(rf"Image_zoo\{i}.jpg")
                 await bot.send_photo(message.chat.id, photo, caption=f'Поздравляем! Вы - {i}',
                                      reply_markup=kb_types.keyboard_after)
                 await state.update_data(RESULT=i)
@@ -154,7 +154,7 @@ async def night_or_not(message: types.Message, state: FSMContext, bot: Bot):
                 await state.set_state(QuizStep.BEAK.state)
             else:
                 for i in my_animal:
-                    photo = FSInputFile(rf"D:\Python Projects\python_practice\Zoo.Moscow\Image_zoo\{i}.jpg")
+                    photo = FSInputFile(rf"Image_zoo\{i}.jpg")
                     await bot.send_photo(message.chat.id, photo, caption=f'Поздравляем! Вы - {i}',
                                          reply_markup=kb_types.keyboard_after)
                     await state.update_data(RESULT=i)
@@ -173,7 +173,7 @@ async def night_or_not(message: types.Message, state: FSMContext, bot: Bot):
                     await state.set_state(QuizStep.HORNS.state)
                 else:
                     for i in my_animal:
-                        photo = FSInputFile(rf"D:\Python Projects\python_practice\Zoo.Moscow\Image_zoo\{i}.jpg")
+                        photo = FSInputFile(rf"Image_zoo\{i}.jpg")
                         await bot.send_photo(message.chat.id, photo, caption=f'Поздравляем! Вы - {i}',
                                              reply_markup=kb_types.keyboard_after)
                         await state.update_data(RESULT=i)
@@ -242,7 +242,7 @@ async def underwater_or_not(message: types.Message, state: FSMContext, bot: Bot)
             await state.set_state(QuizStep.FROG.state)
         else:
             for i in my_animal:
-                photo = FSInputFile(rf"D:\Python Projects\python_practice\Zoo.Moscow\Image_zoo\{i}.jpg")
+                photo = FSInputFile(rf"Image_zoo\{i}.jpg")
                 await bot.send_photo(message.chat.id, photo, caption=f'Поздравляем! Вы - {i}',
                                      reply_markup=kb_types.keyboard_after)
                 await state.update_data(RESULT=i)
@@ -271,7 +271,7 @@ async def cat_or_not(message: types.Message, state: FSMContext, bot: Bot):
     my_animal = await filter_final(dict_animals)
 
     for i in my_animal:
-        photo = FSInputFile(rf"D:\Python Projects\python_practice\Zoo.Moscow\Image_zoo\{i}.jpg")
+        photo = FSInputFile(rf"Image_zoo\{i}.jpg")
         await bot.send_photo(message.chat.id, photo, caption=f'Поздравляем! Вы - {i}',
                              reply_markup=kb_types.keyboard_after)
         await state.update_data(RESULT=i)
@@ -297,7 +297,7 @@ async def horns_or_not(message: types.Message, state: FSMContext, bot: Bot):
     my_animal = await filter_final(dict_animals)
 
     for i in my_animal:
-        photo = FSInputFile(rf"D:\Python Projects\python_practice\Zoo.Moscow\Image_zoo\{i}.jpg")
+        photo = FSInputFile(rf"Image_zoo\{i}.jpg")
         await bot.send_photo(message.chat.id, photo, caption=f'Поздравляем! Вы - {i}',
                              reply_markup=kb_types.keyboard_after)
         await state.update_data(RESULT=i)
@@ -323,7 +323,7 @@ async def teeth_or_not(message: types.Message, state: FSMContext, bot: Bot):
     my_animal = await filter_final(dict_animals)
 
     for i in my_animal:
-        photo = FSInputFile(rf"D:\Python Projects\python_practice\Zoo.Moscow\Image_zoo\{i}.jpg")
+        photo = FSInputFile(rf"Image_zoo\{i}.jpg")
         await bot.send_photo(message.chat.id, photo, caption=f'Поздравляем! Вы - {i}',
                              reply_markup=kb_types.keyboard_after)
         await state.update_data(RESULT=i)
@@ -349,7 +349,7 @@ async def color_or_not(message: types.Message, state: FSMContext, bot: Bot):
     my_animal = await filter_final(dict_animals)
 
     for i in my_animal:
-        photo = FSInputFile(rf"D:\Python Projects\python_practice\Zoo.Moscow\Image_zoo\{i}.jpg")
+        photo = FSInputFile(rf"Image_zoo\{i}.jpg")
         await bot.send_photo(message.chat.id, photo, caption=f'Поздравляем! Вы - {i}',
                              reply_markup=kb_types.keyboard_after)
         await state.update_data(RESULT=i)
@@ -375,7 +375,7 @@ async def beak_or_not(message: types.Message, state: FSMContext, bot: Bot):
     my_animal = await filter_final(dict_animals)
 
     for i in my_animal:
-        photo = FSInputFile(rf"D:\Python Projects\python_practice\Zoo.Moscow\Image_zoo\{i}.jpg")
+        photo = FSInputFile(rf"Image_zoo\{i}.jpg")
         await bot.send_photo(message.chat.id, photo, caption=f'Поздравляем! Вы - {i}',
                              reply_markup=kb_types.keyboard_after)
         await state.update_data(RESULT=i)
@@ -401,7 +401,7 @@ async def frog_or_not(message: types.Message, state: FSMContext, bot: Bot):
     my_animal = await filter_final(dict_animals)
 
     for i in my_animal:
-        photo = FSInputFile(rf"D:\Python Projects\python_practice\Zoo.Moscow\Image_zoo\{i}.jpg")
+        photo = FSInputFile(rf"Image_zoo\{i}.jpg")
         await bot.send_photo(message.chat.id, photo, caption=f'Поздравляем! Вы - {i}',
                              reply_markup=kb_types.keyboard_after)
         await state.update_data(RESULT=i)

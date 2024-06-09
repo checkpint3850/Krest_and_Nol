@@ -24,7 +24,7 @@ dp.include_router(fdb_router)
 
 @dp.message(CommandStart())
 async def command_start_handler(message: Message, bot: Bot) -> None:
-    photo = FSInputFile(r'D:\Python Projects\python_practice\Zoo.Moscow\Image_zoo\hello.jpg')
+    photo = FSInputFile(r'Image_zoo\hello.jpg')
     await bot.send_photo(message.chat.id, photo, caption='Привет!👋')
     await message.answer(f"🐾Хочешь узнать кем бы Ты был(-а) в мире животных? Жми на викторину!🐾",
                          reply_markup=kb_types.kb_start_in)
