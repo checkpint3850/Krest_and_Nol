@@ -76,4 +76,3 @@ class Comment(models.Model):
     def dislike(self):
         self.comment_rating -= 1
         self.save()
-
