@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
+from django.urls import reverse
 # Create your models here.
 
 
@@ -14,18 +15,15 @@ class Author(models.Model):
         comments_rating = self.user.comments.aggregate(cr=Coalesce(Sum('comment_rating'), 0))['cr']
         posts_comments_rating = self.posts.aggregate(pcr=Coalesce(Sum('comment__comment_rating'), 0))['pcr']
 
-        print(posts_rating)
-        print('---------------------')
-        print(comments_rating)
-        print('---------------------')
-        print(posts_comments_rating)
-
         self.author_rating = posts_rating * 3 + comments_rating + posts_comments_rating
         self.save()
 
 
 class Category(models.Model):
     news_article = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.news_article.title()
 
 
 class Post(models.Model):
@@ -55,6 +53,12 @@ class Post(models.Model):
     def preview(self):
         point = '....'
         return self.text[:124] + point
+
+    def __str__(self):
+        return f'{self.heading.title()}: {self.text[:10]}'
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
 
 class PostCategory(models.Model):
