@@ -1,22 +1,14 @@
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from .models import Post
 from .filters import PostFilter
 from .forms import PostForm
-
-# Create your views here.
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class PostsList(ListView):
-    queryset = Post.objects.order_by('-datetime_in')
-    template_name = 'news.html'
-    context_object_name = 'post'
-    paginate_by = 10
-
-
-class PostsSearch(ListView):
-    queryset = Post.objects.order_by('-datetime_in')
-    template_name = 'search.html'
+    model = Post
+    ordering = '-datetime_in'
     context_object_name = 'post'
     paginate_by = 10
 
@@ -30,6 +22,11 @@ class PostsSearch(ListView):
         context['filterset'] = self.filterset
         return context
 
+    def get_template_names(self):
+        if self.request.path == '/post/search/':
+            return 'search.html'
+        return 'news.html'
+
 
 class PostDetail(DetailView):
     model = Post
@@ -37,29 +34,20 @@ class PostDetail(DetailView):
     context_object_name = "post"
 
 
-class PostCreate(CreateView):
+class PostCreate(LoginRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
 
     def form_valid(self, form):
         post = form.save(commit=False)
-        post.category = "N"
+        if self.request.path == '/post/articles/create/':
+            post.category = "A"
+        post.save()
         return super().form_valid(form)
 
 
-class ArticleCreate(CreateView):
-    form_class = PostForm
-    model = Post
-    template_name = 'post_edit.html'
-
-    def form_valid(self, form):
-        post = form.save(commit=False)
-        post.category = "A"
-        return super().form_valid(form)
-
-
-class PostUpdate(UpdateView):
+class PostUpdate(LoginRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
