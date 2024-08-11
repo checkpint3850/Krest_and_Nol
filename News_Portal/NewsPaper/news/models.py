@@ -21,9 +21,10 @@ class Author(models.Model):
 
 class Category(models.Model):
     news_article = models.CharField(max_length=255, unique=True)
+    subscribers = models.ManyToManyField(User, blank=True, related_name='categories')
 
     def __str__(self):
-        return self.news_article.title()
+        return self.news_article
 
 
 class Post(models.Model):

@@ -7,19 +7,22 @@
 {% endblock title %}
 
 {% block content %}
-
-<h1>Новости</h1>
-<h3>{% current_time '%d %b %Y' %}</h3>
-<h4>Количество новостей: {{ post|length }}</h4>
-<hr>
+    {% if is_not_subscriber %}
+        <p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm">Подписаться</a></p>
+    {% endif %}
+    <h1>Новости</h1>
+    <h3>{% current_time '%d %b %Y' %}</h3>
+    <h4>Количество новостей: {{ category_news_list|length }}</h4>
+    <hr>
     <table>
         <tr>
             <td>Заголовок</td>
             <td>Дата публикации</td>
             <td>Содержание</td>
+            <td>Категории</td>
         </tr>
 
-        {% for p in post %}
+        {% for p in category_news_list %}
         <tr>
             <td>{{ p.heading }}</td>
             <td>{{ p.datetime_in|date:'d M Y' }}</td>
