@@ -6,6 +6,7 @@ from .models import Post, Category
 from .filters import PostFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.mail import send_mail
 
 
 class PostsList(ListView):
@@ -69,8 +70,9 @@ class CategoryListView(PostsList):
     context_object_name = 'category_news_list'
 
     def get_queryset(self):
+        queryset = super().get_queryset()
         self.category = get_object_or_404(Category, id=self.kwargs['pk'])
-        queryset = Post.objects.filter(category=self.category).order_by('-datetime_in')
+        queryset = queryset.filter(category=self.category).order_by('-datetime_in')
         return queryset
 
     def get_context_data(self, **kwargs):
