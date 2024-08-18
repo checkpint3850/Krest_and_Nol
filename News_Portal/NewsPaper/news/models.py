@@ -19,12 +19,13 @@ class Author(models.Model):
         self.save()
 
 
+
 class Category(models.Model):
-    news_article = models.CharField(max_length=255, unique=True)
-    subscribers = models.ManyToManyField(User, blank=True, related_name='categories')
+    name = models.CharField(max_length=255, unique=True)
+    subscribers = models.ManyToManyField(User, blank=True, null=True, related_name='categories')
 
     def __str__(self):
-        return self.news_article
+        return self.name
 
 
 class Post(models.Model):
@@ -36,9 +37,9 @@ class Post(models.Model):
     ]
 
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts')
-    category = models.CharField(max_length=1, choices=POSITIONS, default=news)
+    category_type = models.CharField(max_length=1, choices=POSITIONS, default=news)
     datetime_in = models.DateTimeField(auto_now_add=True)
-    news_article = models.ManyToManyField(Category, through='PostCategory')
+    category = models.ManyToManyField(Category, through='PostCategory', related_name='posts_category',)
     heading = models.CharField(max_length=60)
     text = models.TextField()
     post_rating = models.IntegerField(default=0)

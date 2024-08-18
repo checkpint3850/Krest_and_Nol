@@ -46,7 +46,7 @@ class PostCreate(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         if self.request.path == '/post/articles/create/':
-            post.category = "A"
+            post.category_type = "A"
         post.save()
         return super().form_valid(form)
 
@@ -64,15 +64,15 @@ class PostDelete(DeleteView):
     success_url = reverse_lazy('post_list')
 
 
-class CategoryListView(PostsList):
+class CategoryListView(ListView):
     model = Post
     template_name = 'news/category_list.html'
     context_object_name = 'category_news_list'
+    paginate_by = 10
 
     def get_queryset(self):
-        queryset = super().get_queryset()
         self.category = get_object_or_404(Category, id=self.kwargs['pk'])
-        queryset = queryset.filter(category=self.category).order_by('-datetime_in')
+        queryset = Post.objects.filter(category=self.category).order_by('-datetime_in')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -87,5 +87,6 @@ def subscribe(request, pk):
     user = request.user
     category = Category.objects.get(id=pk)
     category.subscribers.add(user)
+
     message = 'Вы успешно подписались на рассылку новостей категории'
     return render(request, 'news/subscribe.html', {'category': category, 'message': message})
