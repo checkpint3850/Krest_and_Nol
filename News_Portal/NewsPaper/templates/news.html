@@ -12,6 +12,7 @@
 <h3>{% current_time '%d %b %Y' %}</h3>
 <h4>Количество новостей: {{ post|length }}</h4>
 <hr>
+{% if post %}
     <table>
         <tr>
             <td>Заголовок</td>
@@ -33,6 +34,9 @@
         </tr>
         {% endfor %}
     </table>
+{% else %}
+    <h2>Новостей пока нет!</h2>
+{% endif %}
 
     {% if page_obj.has_previous %}
         <a href="?{% url_replace page=1 %}">1</a>

@@ -1,11 +1,10 @@
+from django.conf import settings
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.core.mail import mail_managers, EmailMultiAlternatives
 from django.template.loader import render_to_string
 
-
 from .models import PostCategory
-
 
 
 def send_notifications(previw, pk, heading, subscribers):
@@ -13,7 +12,8 @@ def send_notifications(previw, pk, heading, subscribers):
         'post_created_email.html',
         {
             'text': previw,
-            'link': f'{settings.SITE_URL}/news/{pk}'
+            'link': f'{settings.SITE_URL}/post/{pk}',
+
         }
     )
 
