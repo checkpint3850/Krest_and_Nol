@@ -28,7 +28,7 @@
             <td>{{ p.datetime_in|date:'d M Y' }}</td>
             <td>{{ p.text|truncatechars:20 }}</td>
             <td>
-                {% for category in post.category.all %}
+                {% for category in p.category.all %}
                     <a href="{% url 'category_list' category.id %}">{{ category }}</a>
                 {% endfor %}
             </td>
