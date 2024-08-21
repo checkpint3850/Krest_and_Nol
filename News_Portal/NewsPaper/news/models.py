@@ -19,7 +19,6 @@ class Author(models.Model):
         self.save()
 
 
-
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
     subscribers = models.ManyToManyField(User, blank=True, null=True, related_name='categories')
