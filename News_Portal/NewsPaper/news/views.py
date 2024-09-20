@@ -7,6 +7,7 @@ from .filters import PostFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.mail import send_mail
+import logging
 
 
 class PostsList(ListView):

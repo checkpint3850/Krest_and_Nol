@@ -23,7 +23,9 @@
 
         {% for p in post %}
         <tr>
-            <td>{{ p.heading }}</td>
+            <td>
+                <a href="{% url 'post_detail' p.id %}">{{ p.heading }}</a>
+            </td>
             <td>{{ p.datetime_in|date:'d M Y' }}</td>
             <td>{{ p.text|truncatechars:20 }}</td>
             <td>

@@ -8,11 +8,7 @@
 
 
 {% block content %}
-{% load cache %}
-    {% cache 300 content %}
-        <h1>{{ post.heading|censor }}</h1>
-        <h4>{{ post.datetime_in|date:'d M Y' }}</h4>
-        <h3>{{ post.text|censor }}</h3>
-    {% endcache %}
-
+    <h1>{{ post.heading|censor }}</h1>
+    <h4>{{ post.datetime_in|date:'d M Y' }}</h4>
+    <h3>{{ post.text|censor }}</h3>
 {% endblock content %}
