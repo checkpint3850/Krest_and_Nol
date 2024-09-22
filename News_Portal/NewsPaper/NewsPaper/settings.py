@@ -196,36 +196,55 @@ LOGGING = {
         'cons_debug': {
             'format': '%(asctime)s %(levelname)s %(message)s'
         },
-        'cons_warning_error': {
+        'cons_warning': {
             'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s'
+        },
+        'cons_error': {
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s'
         },
         'fl_general_security': {
             'format': '%(asctime)s %(levelname)s %(module)s %(message)s'
         },
         'fl_errors': {
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s'
+        },
+        'mail_errors': {
             'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s'
         },
+
     },
 
     'filters': {
         'require_debug_true': {
             '()': 'django.utils.log.RequireDebugTrue',
         },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
     },
 
     'handlers': {
         'console_debug': {
             'level': 'DEBUG',
+            'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
             'formatter': 'cons_debug'
         },
         'console_warning': {
             'level': 'WARNING',
+            'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
-            'formatter': 'cons_warning_error'
+            'formatter': 'cons_warning'
+        },
+        'console_error': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'cons_error'
         },
         'file_general': {
             'level': 'INFO',
+            'filters': ['require_debug_false'],
             'class': 'logging.FileHandler',
             'formatter': 'fl_general_security',
             'filename': 'general.log',
@@ -242,22 +261,21 @@ LOGGING = {
             'formatter': 'fl_general_security',
             'filename': 'security.log',
         },
-
         'mail_admins': {
             'level': 'ERROR',
+            'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler',
-            'formatter': 'fl_errors'
+            'formatter': 'mail_errors'
         }
     },
 
     'loggers': {
         'django': {
-            'handlers': ['console_debug', 'console_warning', 'file_general'],
+            'handlers': ['console_debug', 'console_warning', 'console_error', 'file_general'],
             'propagate': True,
         },
         'django.request': {
             'handlers': ['mail_admins', 'file_errors',],
-            'level': 'ERROR',
             'propagate': True,
         },
         'django.server': {

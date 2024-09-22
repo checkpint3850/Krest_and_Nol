@@ -10,6 +10,9 @@ from django.core.mail import send_mail
 import logging
 
 
+logger = logging.getLogger()
+
+
 class PostsList(ListView):
     model = Post
     ordering = '-datetime_in'
