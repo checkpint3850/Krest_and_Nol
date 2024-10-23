@@ -23,9 +23,11 @@
         <h6>Видео нет</h6>
     {% endif %}
 
+    <a href="{% url 'ad_update' post.id %}"><h7> Изменить объявление </h7></a>
+    <br>
     <a href="{% url 'ad_delete' post.id %}"><h7> Удалить объявление </h7></a>
     <hr>
-    <a href="{% url 'response_create' %}"><h7> Оставить отклик </h7></a>
+    <a href="{% url 'response_create' post.id %}"><h7> Оставить отклик </h7></a>
 
 
 {% endblock content %}

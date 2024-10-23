@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
@@ -7,7 +8,7 @@ from .filters import PostFilter
 from .forms import PostForm, ResponseForm
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.models import User
-
+from .signals import notify_about_accept_response
 
 class PostsList(ListView):
     model = Post
@@ -43,6 +44,12 @@ class PostCreate(PermissionRequiredMixin, CreateView):
     model = Post
     template_name = 'ad_edit.html'
 
+    def form_valid(self, form):
+        pos = form.save(commit=False)
+        pos.author = self.request.user
+        pos.save()
+        return super().form_valid(form)
+
 
 class PostUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = ('board.change_post',)
@@ -73,8 +80,16 @@ class ResponseCreate(PermissionRequiredMixin, CreateView):
     template_name = 'response_edit.html'
     success_url = reverse_lazy('response_list')
 
+    def form_valid(self, form):
+        res = form.save(commit=False)
+        res.user = self.request.user
+        res.post_id = self.kwargs['pk']
+        res.save()
+        return super().form_valid(form)
 
-class ResponseDelete(DeleteView):
+
+class ResponseDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('board.delete_response',)
     model = Response
     template_name = 'response_delete.html'
     success_url = reverse_lazy('Response_list')
@@ -83,10 +98,11 @@ class ResponseDelete(DeleteView):
 class ConfirmUser(UpdateView):
     model = User
     context_object_name = 'confirm_user'
+    success_url = reverse_lazy('profile')
 
     def post(self, request, *args, **kwargs):
-        if 'code' in request.Post:
-            user = User.objects.filter(code=request.Post['code'])
+        if 'code' in request.POST:
+            user = User.objects.filter(code=request.POST['code'])
             if user.exists():
                 user.update(is_active=True)
                 user.update(code=None)
@@ -97,3 +113,25 @@ class ConfirmUser(UpdateView):
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'users/profile.html'
+
+
+@login_required
+def response_accept(request, **kwargs):
+    if request.user.is_authenticated:
+        response = Response.objects.get(id=kwargs.get('pk'))
+        response.status = True
+        response.save()
+        notify_about_accept_response(response_id=response.id)
+        return HttpResponseRedirect('/board/responses')
+    else:
+        return HttpResponseRedirect('/accounts/login')
+
+
+@login_required
+def response_delete(request, **kwargs):
+    if request.user.is_authenticated:
+        response = Response.objects.get(id=kwargs.get('pk'))
+        response.delete()
+        return HttpResponseRedirect('/board/responses')
+    else:
+        return HttpResponseRedirect('/accounts/login')

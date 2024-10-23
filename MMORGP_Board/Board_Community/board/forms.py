@@ -16,7 +16,6 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = [
-            'author',
             'heading',
             'text',
             'category',
@@ -24,7 +23,6 @@ class PostForm(forms.ModelForm):
             'video',
         ]
         labels = {
-            'author': 'Кто создает',
             'heading': 'Создайте заголовок',
             'text': 'Введите текст',
             'category': 'Выберите категорию',
@@ -47,13 +45,9 @@ class ResponseForm(forms.ModelForm):
     class Meta:
         model = Response
         fields = [
-            'post',
-            'user',
             'text',
         ]
         labels = {
-            'post': 'К объявлению',
-            'user': 'От',
             'text': 'Введите текст',
         }
 

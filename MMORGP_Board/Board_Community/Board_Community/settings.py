@@ -44,11 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'fpages',
-    'board',
+    'board.apps.BoardConfig',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+    'django_apscheduler',
 
 
 ]
@@ -165,7 +166,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = os.getenv('USER')
-EMAIL_HOST_PASSWORD = os.getenv('PASSWORD')
+EMAIL_HOST_PASSWORD = os.getenv('PASSWORD_APP')
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_MAIL')
 
@@ -175,3 +176,6 @@ SERVER_EMAIL = os.getenv('DEFAULT_MAIL')
 EMAIL_ADMIN = os.getenv('DEFAULT_MAIL')
 
 ACCOUNT_FORMS = {'signup': 'board.forms.CommonSignupForm'}
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25

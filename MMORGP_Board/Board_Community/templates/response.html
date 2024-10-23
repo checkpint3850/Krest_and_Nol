@@ -23,9 +23,17 @@
 
         {% for c in response %}
         <tr>
-            <td>{{ c.post }}</td>
+            <td>
+                <a href="{% url 'ad_detail' c.post.id %}">{{ c.post }}</a>
+            </td>
             <td>{{ c.time_response|date:'d M Y' }}</td>
             <td>{{ c.text|truncatechars:20 }}</td>
+            <td>
+                <a href="{% url 'response_accept' c.id  %}"> Принять отклик </a>
+            </td>
+            <td>
+                <a href="{% url 'response_delete' c.id  %}"> Удалить отклик </a>
+            </td>
         </tr>
         {% endfor %}
     </table>
