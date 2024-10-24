@@ -5,44 +5,31 @@ from django.conf import settings
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
+from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 
 
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import send_mail
 
-from board.models import Post, Response
 
 logger = logging.getLogger(__name__)
 
 
 # наша задача по выводу текста на экран
 def my_job():
-    print('hello from job')
-    today = datetime.datetime.now()
-    last_week = today - datetime.timedelta(days=7)
-    posts = Post.objects.filter(datetime_in__gte=last_week)
-    users = set(Post.objects.filter('user').values_list('user__email', flat=True))
+    users = User.objects.all()
+    users_mail = [u.email for u in users]
 
-    html_content = render_to_string(
-        'daily_post.html',
-        {
-            'link': settings.SITE_URL,
-            'posts': posts,
-        }
-    )
-
-    msg = EmailMultiAlternatives(
-        subject='Посты за неделю',
-        body='',
+    send_mail(
+        subject=f'MMORPG Board',
+        message=f'Доброго дня! На платформе MMORPG Board появились новые посты!\n'
+                f'Посмотреть:\nhttp://127.0.0.1:8000/board/',
         from_email=settings.DEFAULT_FROM_EMAIL,
-        to=users,
+        recipient_list=users_mail
     )
 
-    msg.attach_alternative(html_content, 'text/html')
-    msg.send()
 
 
 # функция, которая будет удалять неактуальные задачи
