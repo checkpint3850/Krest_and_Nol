@@ -1,7 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from board.services import get_path_upload_image, get_path_upload_video
+
+
+class User(AbstractUser):
+    code = models.CharField(max_length=15, blank=True, null=True)
 
 
 class Post(models.Model):
@@ -52,5 +56,3 @@ class Response(models.Model):
     text = models.TextField()
     time_response = models.DateTimeField(auto_now_add=True)
     condition = models.BooleanField(default=False)
-
-

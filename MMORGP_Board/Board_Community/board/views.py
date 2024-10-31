@@ -3,12 +3,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
-from .models import Post, Response
+from .models import User, Post, Response
 from .filters import PostFilter
 from .forms import PostForm, ResponseForm
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.contrib.auth.models import User
 from .signals import notify_about_accept_response
+
 
 class PostsList(ListView):
     model = Post
@@ -119,7 +119,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 def response_accept(request, **kwargs):
     if request.user.is_authenticated:
         response = Response.objects.get(id=kwargs.get('pk'))
-        response.status = True
+        response.condition = True
         response.save()
         notify_about_accept_response(response_id=response.id)
         return HttpResponseRedirect('/board/responses')

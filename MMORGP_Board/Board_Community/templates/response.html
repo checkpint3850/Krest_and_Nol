@@ -29,7 +29,11 @@
             <td>{{ c.time_response|date:'d M Y' }}</td>
             <td>{{ c.text|truncatechars:20 }}</td>
             <td>
-                <a href="{% url 'response_accept' c.id  %}"> Принять отклик </a>
+                {% if c.condition == False %}
+                    <a href="{% url 'response_accept' c.id  %}"> Принять отклик </a>
+                {% else %}
+                    <h6> Отклик принят </h6>
+                {% endif %}
             </td>
             <td>
                 <a href="{% url 'response_delete' c.id  %}"> Удалить отклик </a>
